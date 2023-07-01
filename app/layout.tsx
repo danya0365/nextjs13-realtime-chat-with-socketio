@@ -1,9 +1,9 @@
-import classNames from "classnames";
 import { Inter as FontSans } from "next/font/google";
 import { PropsWithChildren } from "react";
 import "@/styles/globals.css";
 import { ThemeProvider } from "@/providers/theme-providers";
 import ThemeSwitch from "@/components/theme-switch";
+import { classNames } from "@/lib/utils";
 
 const fontSans = FontSans({
   subsets: ["latin"],

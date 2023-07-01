@@ -1,9 +1,14 @@
 "use client";
 
+import { classNames } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { useState, useEffect } from "react";
 
-const ThemeSwitch = () => {
+const ThemeSwitch = ({
+  classNamePosition = "top-4 left-4",
+}: {
+  classNamePosition?: string;
+}) => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -17,7 +22,7 @@ const ThemeSwitch = () => {
   }
 
   return (
-    <div className="fixed bottom-4 left-4 h-100 w-100 p">
+    <div className={classNames(" fixed h-100 w-100 p", classNamePosition)}>
       <select
         value={theme}
         onChange={(e) => setTheme(e.target.value)}
