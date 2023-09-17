@@ -2,16 +2,16 @@
 
 import LoadingDots from "@/components/loading-dots";
 import React, { useState, useEffect, useRef } from "react";
-import { io as ClientIO } from "socket.io-client";
+import io from "socket.io-client";
 
-interface IChatMessage {
-  userName: string;
-  message: string;
+type IChatMessage = {
+  userName: string
+  message: string
 }
 
 // component
 const Index: React.FC = () => {
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // connected flag
   const [connected, setConnected] = useState<boolean>(false);
@@ -47,7 +47,7 @@ const Index: React.FC = () => {
       if (resp.ok) setMessageInput("");
     }
 
-    (inputRef?.current as any).focus();
+    inputRef.current!.focus();
   };
 
   const sendEnterRoomMessage = async () => {
@@ -64,14 +64,15 @@ const Index: React.FC = () => {
     }
   };
 
-  useEffect((): any => {
+  useEffect(() => {
     if (userName) {
       sendEnterRoomMessage();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userName]);
 
   useEffect((): any => {
-    const socket = new (ClientIO as any)(process.env.NEXT_PUBLIC_SITE_URL, {
+    const socket = io(process.env.NEXT_PUBLIC_SITE_URL!, {
       path: "/api/socket/io",
       addTrailingSlash: false,
     });
@@ -84,8 +85,7 @@ const Index: React.FC = () => {
 
     // update chat on new message dispatched
     socket.on("message", (message: IChatMessage) => {
-      chatMessages.push(message);
-      setChatMessages([...chatMessages]);
+      setChatMessages(prev => [...prev, message]);
     });
 
     // socket disconnet onUnmount if exists
